@@ -2,7 +2,7 @@ S-WM RECOVERY SYSTEM · WORKING-MATERIAL LAYER · INTERNAL
 
 # Universal S-WM Working-Material Extractor
 
-**Version:** v2.0c · **Change:** adds the mode layer and ENGINE-ONLY admission control to the parent recovery framework. One law added (law 10, credential redaction); the rest of the preservation laws unchanged.
+**Version:** v2.0d · **Change:** adds the mode layer and ENGINE-ONLY admission control to the parent recovery framework. One law added (law 10, credential redaction); the rest of the preservation laws unchanged.
 **Supersedes:** Universal S-WM Working-Material Extractor v1.x
 **Kit:** SWM Document Kit v2.1 · **Governed by:** SWM Standing Rules
 
@@ -38,7 +38,9 @@ A source is in scope whether or not it looks finished, correct, or current. Draf
 
 **Content separation holds absolutely.** Medical, treatment, crisis and legal-case content is out of scope in every mode: never returned, never quoted, never summarized, never itemized or characterized anywhere in the output. It does not belong to S-WM working material, and its presence in a source does not make that source's other content ineligible.
 
-What this excludes is the content, not the source. A source that contains protected material is still listed in the manifest and the coverage map by its own identity and status, and its in-scope content is still swept and returned as normal — dropping the source outright would put a hole in the coverage map and hide the omission. Where the protected material is why a source is only partly swept, the coverage-map reason names the rule and stops there ("PARTIAL — out-of-scope content omitted under Section 01"), because a reason detailed enough to describe what was omitted would leak what the rule exists to keep out.
+What this excludes is the content, not the source. A source that contains protected material is still listed in the manifest and the coverage map, and its in-scope content is still swept and returned as normal — dropping the source outright would put a hole in the coverage map and hide the omission. **A source is listed by a non-disclosing identity.** Filenames, titles, subject lines and locators are themselves content: `Jane Doe — cancer treatment plan.pdf` discloses precisely what this section forbids, and listing it as-is would breach the rule in the act of obeying it. Where a source's identity or locator reveals protected material, it is replaced throughout the return — manifest, coverage map, `SOURCE`, `LINKS` — with a stable neutral reference of the form `SOURCE-014 [IDENTITY WITHHELD: SECTION 01]`. Stable, because cross-links and chronology have to keep working; neutral, because the reference must survive being read by anyone. The mapping back to the real source is never written into the return: the operator holds it already. Where the protected material is why a source is only partly swept, the coverage-map reason names the rule and stops there ("PARTIAL — out-of-scope content omitted under Section 01"), because a reason detailed enough to describe what was omitted would leak what the rule exists to keep out.
+
+This and law 10 are the only two redactions in the framework, and they work the same way: the omission is always visible, always marked, and never silently widened.
 
 ---
 
@@ -167,6 +169,7 @@ CARRIER CONTEXT:  "<minimum quoted surround, where needed>"
 VERIFICATION:     VERIFIED | CONFIRM | RECLASSIFIED | RECON FIRST
 FLAGS:            [CONFLICT] [MISSING] [INFERENCE] [UNVERIFIED SOURCE] [UNDATED]
                    [OUT OF MODE] [REDACTED: CREDENTIAL]
+                   [IDENTITY WITHHELD: SECTION 01]
 LINKS:            <related RECORD IDs — conflicts, supersessions, dependencies>
 NOTE:             <extractor's own words — locator detail only, never interpretation>
 ```
@@ -216,6 +219,7 @@ A failed check names what is wrong and what it affects. It does not license a fi
 
 | Version | Change |
 |---|---|
+| v2.0d | Fourth review pass. Closed the identity leak introduced by v2.0c: a source whose filename, title, subject or locator discloses protected content is now listed under a stable neutral reference (`SOURCE-nn [IDENTITY WITHHELD: SECTION 01]`) used consistently across manifest, coverage map, `SOURCE` and `LINKS`, with the mapping never written into the return. |
 | v2.0c | Third review pass. Section 01 clarified: the exclusion covers protected content, not the sources carrying it — such a source still appears in the manifest and coverage map, with the omission reason naming the rule and no more. Law 6 now makes the bracketed tag the contract and red italic the Document Kit rendering convention, so the marker survives plain-text, Markdown and JSON returns. |
 | v2.0b | Second review pass. Law 10 extended to credential-bearing `SOURCE` locators (redact the secret component, keep the locator retrievable). Section 01 given precedence over the carrier-context ruling, so protected content is never quoted as surround. QA gate reworded from all-must-pass to evaluated-and-reported, which no longer contradicts the rule that a failed check is disclosed. |
 | v2.0a | Review pass. Added law 10 (credentials redacted in place, the one exception to law 1) and the class 07 note. Stated precedence on the commercial-gate ruling (law 1 wins inside an admitted record; `[OUT OF MODE]` never cuts a quotation) and on Held vs. conflict counterparts (Section 03 wins; a conflict is never returned one-sided). `DOMAIN` now accepts a descriptive label for non-engine records in FULL mode. |
