@@ -2,7 +2,7 @@ S-WM RECOVERY SYSTEM · WORKING-MATERIAL LAYER · INTERNAL
 
 # Universal S-WM Working-Material Extractor
 
-**Version:** v2.0f · **Change:** adds the mode layer and ENGINE-ONLY admission control to the parent recovery framework. One law added (law 10, credential redaction); the rest of the preservation laws unchanged.
+**Version:** v2.0g · **Change:** adds the mode layer and ENGINE-ONLY admission control to the parent recovery framework. One law added (law 10, credential redaction); the rest of the preservation laws unchanged.
 **Supersedes:** Universal S-WM Working-Material Extractor v1.x
 **Kit:** SWM Document Kit v2.1 · **Governed by:** SWM Standing Rules
 
@@ -223,15 +223,16 @@ Return in this order:
 - **D · Conflict register** — each conflict, both sides, cross-linked record IDs, unresolved by design
 - **E · Gap register** — [NOT RECOVERED] / [MISSING] entries, including empty domains
 - **F · Held register** — borderline admissions, each with its one-line reason
-- **G · QA attestation** — the five checks below, each stated pass or fail
+- **G · QA attestation** — the six checks below, each stated pass or fail
 
-Five checks, evaluated and reported on every run. The attestation states each one pass or fail, and the run returns its evidence either way: a failed check is a disclosed defect in the return, never grounds for withholding it.
+Six checks, evaluated and reported on every run. The attestation states each one pass or fail, and the run returns its evidence either way: a failed check is a disclosed defect in the return, never grounds for withholding it.
 
-1. **Preservation check** — every `VERBATIM` is source wording; no paraphrase has entered the field, and the only text removed from one is a law-10 credential redaction or a Section 01 omission, each marked in place and noted in the record
-2. **Provenance check** — every record carries source and date, or carries the tag explaining why it cannot
-3. **Anti-fabrication sweep** — no invented value anywhere; every gap explicitly marked
-4. **Non-resolution check** — no conflict silently reconciled, no version silently elected
-5. **Mode-integrity check** — exclusions are admission-only; no record was excluded on grounds a law reserves (draft status, staleness, apparent wrongness), and no conflict counterpart or gap entry was suppressed by the mode
+1. **Preservation check** — every `VERBATIM` is source wording, with no paraphrase in the field, and nothing removed from one but a law-10 redaction or a Section 01 omission
+2. **Removal-coverage check** — sweep **every content-bearing field in the whole return** — `VERBATIM`, `CARRIER CONTEXT`, `SOURCE`, `DOMAIN`, `LINKS`, `NOTE`, the conflict, gap and Held registers, the manifest and the coverage map — and confirm that nothing removable under **Removals** survives anywhere in it, and that every removal actually made is marked in place and noted. A gate that inspects only quotations cannot see the leaks that rule exists to prevent: a credential in a locator or a name in a coverage-map row passes a `VERBATIM`-only check untouched
+3. **Provenance check** — every record carries source and date, or carries the tag explaining why it cannot
+4. **Anti-fabrication sweep** — no invented value anywhere; every gap explicitly marked
+5. **Non-resolution check** — no conflict silently reconciled, no version silently elected
+6. **Mode-integrity check** — exclusions are admission-only; no record was excluded on grounds a law reserves (draft status, staleness, apparent wrongness), and no conflict counterpart or gap entry was suppressed by the mode
 
 A failed check names what is wrong and what it affects. It does not license a fix that would violate a law, and it does not license silence.
 
@@ -239,6 +240,7 @@ A failed check names what is wrong and what it affects. It does not license a fi
 
 | Version | Change |
 |---|---|
+| v2.0g | Seventh review pass. Added QA check 2, removal coverage: the generalized **Removals** rule reaches every content-bearing field, but the gate still inspected only `VERBATIM`, so a run could report pass with a credential in a locator or protected content in a coverage-map row. The gate now sweeps the whole return. Checks renumbered five to six. |
 | v2.0f | Sixth review pass. Replaced the per-field omission statements with a single **Removals** rule at the end of Section 02: the two removal rules are stated once and reach every record in every mode and every field that can carry content, including fields added later. The previous wording covered only an engine record's own quotation, leaving non-engine records in FULL mode and admitted conflict counterparts facing the same law 1 / Section 01 clash the v2.0e fix set out to close. |
 | v2.0e | Fifth review pass. Sweep order corrected: cross-linking now runs before admission, so a conflict counterpart is still present to be admitted (previously the mode filtered one side out at step 3 and conflicts were only detected at step 5). Schema now gives non-engine conflict counterparts a legal `WM-` id, their own true domain, and an `ADMITTED` field, instead of forcing them into an engine class. Section 01 given precedence over law 1 inside `VERBATIM`, resolving a case the framework could not previously satisfy. |
 | v2.0d | Fourth review pass. Closed the identity leak introduced by v2.0c: a source whose filename, title, subject or locator discloses protected content is now listed under a stable neutral reference (`SOURCE-nn [IDENTITY WITHHELD: SECTION 01]`) used consistently across manifest, coverage map, `SOURCE` and `LINKS`, with the mapping never written into the return. |
