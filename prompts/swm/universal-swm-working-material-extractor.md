@@ -2,7 +2,7 @@ S-WM RECOVERY SYSTEM · WORKING-MATERIAL LAYER · INTERNAL
 
 # Universal S-WM Working-Material Extractor
 
-**Version:** v2.0d · **Change:** adds the mode layer and ENGINE-ONLY admission control to the parent recovery framework. One law added (law 10, credential redaction); the rest of the preservation laws unchanged.
+**Version:** v2.0e · **Change:** adds the mode layer and ENGINE-ONLY admission control to the parent recovery framework. One law added (law 10, credential redaction); the rest of the preservation laws unchanged.
 **Supersedes:** Universal S-WM Working-Material Extractor v1.x
 **Kit:** SWM Document Kit v2.1 · **Governed by:** SWM Standing Rules
 
@@ -40,7 +40,9 @@ A source is in scope whether or not it looks finished, correct, or current. Draf
 
 What this excludes is the content, not the source. A source that contains protected material is still listed in the manifest and the coverage map, and its in-scope content is still swept and returned as normal — dropping the source outright would put a hole in the coverage map and hide the omission. **A source is listed by a non-disclosing identity.** Filenames, titles, subject lines and locators are themselves content: `Jane Doe — cancer treatment plan.pdf` discloses precisely what this section forbids, and listing it as-is would breach the rule in the act of obeying it. Where a source's identity or locator reveals protected material, it is replaced throughout the return — manifest, coverage map, `SOURCE`, `LINKS` — with a stable neutral reference of the form `SOURCE-014 [IDENTITY WITHHELD: SECTION 01]`. Stable, because cross-links and chronology have to keep working; neutral, because the reference must survive being read by anyone. The mapping back to the real source is never written into the return: the operator holds it already. Where the protected material is why a source is only partly swept, the coverage-map reason names the rule and stops there ("PARTIAL — out-of-scope content omitted under Section 01"), because a reason detailed enough to describe what was omitted would leak what the rule exists to keep out.
 
-This and law 10 are the only two redactions in the framework, and they work the same way: the omission is always visible, always marked, and never silently widened.
+**Section 01 also outranks law 1 inside an admitted record.** Where an engine record's own source wording contains protected content, that span is omitted — marked `[…] [OMITTED: SECTION 01]` and noted in `NOTE` — and the rest of the wording is preserved verbatim. Without this the framework is unsatisfiable for such a record: law 1 would demand the quotation that Section 01 forbids. The record is still admitted; only the protected span goes.
+
+Law 10 and Section 01 are the only two rules in the framework that remove anything, and they work the same way: the omission is always visible, always marked, and never silently widened. Nothing else may take text out of a return — not sensitivity, not commercial awkwardness, not the mode.
 
 ---
 
@@ -120,7 +122,7 @@ Business narrative and positioning · brand and naming rationale that carries no
 ### Boundary rulings
 
 - **Engine evidence inside a non-engine passage is admitted.** Return the engine content plus the minimum surrounding source wording needed to keep it intelligible, in a `CARRIER CONTEXT` field marked as such. Carrier context is quoted, not summarized, and is never treated as an admitted record itself. **Section 01 takes precedence over this ruling:** carrier context never includes or quotes medical, treatment, crisis or legal-case content. Omit those portions and keep the minimum non-protected surround; where no intelligible surround remains without them, return no carrier context at all and say so in `NOTE`. The engine record itself is still admitted — the exclusion narrows the surround, never the evidence.
-- **A named gate is engine evidence even when its subject is commercial.** Gate G4 gating pricing is a gate record; the pricing schedule it gates is a separate record and is not admitted. **Precedence: law 1 wins inside an admitted record.** If a commercial figure or term appears within the gate's own criteria, it is quoted verbatim as part of the gate — a `VERBATIM` field is never trimmed, redacted or paraphrased to keep a subject out of mode, because a criterion you cannot read is not a recovered criterion. `[OUT OF MODE]` marks the excluded neighbouring record and is written in the extractor's own fields (`FLAGS`, `NOTE`), never inside a quotation. Law 10 is the only thing that ever removes text from a `VERBATIM` field.
+- **A named gate is engine evidence even when its subject is commercial.** Gate G4 gating pricing is a gate record; the pricing schedule it gates is a separate record and is not admitted. **Precedence: law 1 wins inside an admitted record.** If a commercial figure or term appears within the gate's own criteria, it is quoted verbatim as part of the gate — a `VERBATIM` field is never trimmed, redacted or paraphrased to keep a subject out of mode, because a criterion you cannot read is not a recovered criterion. `[OUT OF MODE]` marks the excluded neighbouring record and is written in the extractor's own fields (`FLAGS`, `NOTE`), never inside a quotation. Only two rules ever remove text from a `VERBATIM` field: law 10, and Section 01.
 - **A deliverable is not admitted; the machinery that produces it is.** A rendered client package is out. Its template, tokens, schema, render pipeline, and QA gate are in.
 - **Known-wrong and abandoned engine material is admitted**, with `STATE:` set accordingly. An abandoned architecture is engine evidence.
 - **Ambiguity does not resolve itself.** A record that is arguably engine evidence and arguably not goes to the **Held register** (output section F) with a one-line statement of why it is borderline, and is never merged into the admitted body. **One exception, and Section 03 takes precedence over this ruling:** a borderline record that is the other side of an admitted **[CONFLICT]** is admitted, marked `ADMITTED: as conflict counterpart`, and cross-linked in the conflict register — a conflict is never returned with one side sitting in Held. Nothing is silently dropped either way. Deciding a held record is a human call.
@@ -158,9 +160,14 @@ Refuse and state why if a run asks for `SOURCE PRESERVATION: OFF`, `CANONIZATION
 *Section function: the shape of one returned unit of evidence.*
 
 ```
-RECORD ID:        ENG-<domain>-<nnn>          (FULL mode: WM-<nnn>)
-DOMAIN:           <admission class, Section 04 — or, in FULL mode, a descriptive
-                   domain label for non-engine material>
+RECORD ID:        ENG-<domain>-<nnn> for engine material; WM-<nnn> for non-engine
+                   material — in FULL mode, and in ENGINE-ONLY for a record
+                   admitted as a conflict counterpart
+DOMAIN:           <admission class, Section 04; or a descriptive domain label for
+                   non-engine material. A counterpart keeps its own true domain —
+                   it is never relabelled as engine evidence to fit the return>
+ADMITTED:         <present only when a record is in the return by something other
+                   than its own admission — currently "as conflict counterpart">
 SOURCE:           <artifact name / type / locator>
 DATE:             <date, or [UNDATED] + relative position>
 STATE:            STATED | PROPOSED | SEALED | SUPERSEDED | ABANDONED | UNCLEAR
@@ -169,7 +176,7 @@ CARRIER CONTEXT:  "<minimum quoted surround, where needed>"
 VERIFICATION:     VERIFIED | CONFIRM | RECLASSIFIED | RECON FIRST
 FLAGS:            [CONFLICT] [MISSING] [INFERENCE] [UNVERIFIED SOURCE] [UNDATED]
                    [OUT OF MODE] [REDACTED: CREDENTIAL]
-                   [IDENTITY WITHHELD: SECTION 01]
+                   [IDENTITY WITHHELD: SECTION 01] [OMITTED: SECTION 01]
 LINKS:            <related RECORD IDs — conflicts, supersessions, dependencies>
 NOTE:             <extractor's own words — locator detail only, never interpretation>
 ```
@@ -184,9 +191,9 @@ NOTE:             <extractor's own words — locator detail only, never interpre
 
 1. **Manifest.** Enumerate every source in `SCOPE:` before reading any of it. Record what exists, what is reachable, what is not.
 2. **Sweep.** Read the full corpus. Capture candidate evidence against all of Section 02, regardless of mode.
-3. **Admit.** Apply the mode (Section 03/04). Route borderline items to Held.
-4. **Chronologize.** Order admitted records within each domain; establish relative position for undated ones.
-5. **Cross-link.** Connect supersessions, dependencies and contradictions. Tag **[CONFLICT]** both ways.
+3. **Chronologize.** Order the swept body; establish relative position for undated material.
+4. **Cross-link.** Connect supersessions, dependencies and contradictions across everything swept. Tag **[CONFLICT]** both ways. **This happens before admission, not after:** a conflict whose other side has already been filtered out cannot be detected, so a mode applied first would hide the very contradictions Section 03 requires it to preserve.
+5. **Admit.** Apply the mode (Section 03/04) to the cross-linked body. Route borderline items to Held; admit conflict counterparts per Section 03, whatever their domain.
 6. **Register gaps.** Every in-scope domain with zero yield, every unreachable source, every unresolved locator.
 7. **QA gate.** Section 08.
 8. **Return.** Section 08 output order.
@@ -207,7 +214,7 @@ Return in this order:
 
 Five checks, evaluated and reported on every run. The attestation states each one pass or fail, and the run returns its evidence either way: a failed check is a disclosed defect in the return, never grounds for withholding it.
 
-1. **Preservation check** — every `VERBATIM` is source wording; no paraphrase has entered the field, and the only text removed from one is a law-10 credential redaction, noted in the record
+1. **Preservation check** — every `VERBATIM` is source wording; no paraphrase has entered the field, and the only text removed from one is a law-10 credential redaction or a Section 01 omission, each marked in place and noted in the record
 2. **Provenance check** — every record carries source and date, or carries the tag explaining why it cannot
 3. **Anti-fabrication sweep** — no invented value anywhere; every gap explicitly marked
 4. **Non-resolution check** — no conflict silently reconciled, no version silently elected
@@ -219,6 +226,7 @@ A failed check names what is wrong and what it affects. It does not license a fi
 
 | Version | Change |
 |---|---|
+| v2.0e | Fifth review pass. Sweep order corrected: cross-linking now runs before admission, so a conflict counterpart is still present to be admitted (previously the mode filtered one side out at step 3 and conflicts were only detected at step 5). Schema now gives non-engine conflict counterparts a legal `WM-` id, their own true domain, and an `ADMITTED` field, instead of forcing them into an engine class. Section 01 given precedence over law 1 inside `VERBATIM`, resolving a case the framework could not previously satisfy. |
 | v2.0d | Fourth review pass. Closed the identity leak introduced by v2.0c: a source whose filename, title, subject or locator discloses protected content is now listed under a stable neutral reference (`SOURCE-nn [IDENTITY WITHHELD: SECTION 01]`) used consistently across manifest, coverage map, `SOURCE` and `LINKS`, with the mapping never written into the return. |
 | v2.0c | Third review pass. Section 01 clarified: the exclusion covers protected content, not the sources carrying it — such a source still appears in the manifest and coverage map, with the omission reason naming the rule and no more. Law 6 now makes the bracketed tag the contract and red italic the Document Kit rendering convention, so the marker survives plain-text, Markdown and JSON returns. |
 | v2.0b | Second review pass. Law 10 extended to credential-bearing `SOURCE` locators (redact the secret component, keep the locator retrievable). Section 01 given precedence over the carrier-context ruling, so protected content is never quoted as surround. QA gate reworded from all-must-pass to evaluated-and-reported, which no longer contradicts the rule that a failed check is disclosed. |
