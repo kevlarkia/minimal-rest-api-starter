@@ -2,7 +2,7 @@ S-WM RECOVERY SYSTEM · WORKING-MATERIAL LAYER · INTERNAL
 
 # Universal S-WM Working-Material Extractor
 
-**Version:** v2.0b · **Change:** adds the mode layer and ENGINE-ONLY admission control to the parent recovery framework. One law added (law 10, credential redaction); the rest of the preservation laws unchanged.
+**Version:** v2.0c · **Change:** adds the mode layer and ENGINE-ONLY admission control to the parent recovery framework. One law added (law 10, credential redaction); the rest of the preservation laws unchanged.
 **Supersedes:** Universal S-WM Working-Material Extractor v1.x
 **Kit:** SWM Document Kit v2.1 · **Governed by:** SWM Standing Rules
 
@@ -36,7 +36,9 @@ Unless narrowed by the `SCOPE:` parameter, the corpus is **all available S-WM wo
 
 A source is in scope whether or not it looks finished, correct, or current. Draft status, staleness and abandonment are recorded as **state**, never used as grounds for exclusion.
 
-**Content separation holds absolutely.** Medical, treatment, crisis and legal-case content is out of scope in every mode and is never returned, never quoted, never summarized, and never listed in the coverage map. It does not belong to S-WM working material and its presence in a source does not make that source's other content ineligible.
+**Content separation holds absolutely.** Medical, treatment, crisis and legal-case content is out of scope in every mode: never returned, never quoted, never summarized, never itemized or characterized anywhere in the output. It does not belong to S-WM working material, and its presence in a source does not make that source's other content ineligible.
+
+What this excludes is the content, not the source. A source that contains protected material is still listed in the manifest and the coverage map by its own identity and status, and its in-scope content is still swept and returned as normal — dropping the source outright would put a hole in the coverage map and hide the omission. Where the protected material is why a source is only partly swept, the coverage-map reason names the rule and stops there ("PARTIAL — out-of-scope content omitted under Section 01"), because a reason detailed enough to describe what was omitted would leak what the rule exists to keep out.
 
 ---
 
@@ -51,7 +53,7 @@ These apply to every run in every mode. A mode may narrow admission. A mode may 
 3. **Chronology.** Order is preserved and stated. Where a date is absent, record the position relative to known-dated material and tag **[UNDATED]**.
 4. **No canonization.** Do not select a winner, a "current version," or a best formulation. Multiple formulations of the same thing are multiple records.
 5. **No conflict resolution.** Contradictions are preserved on both sides, cross-linked, and tagged **[CONFLICT]**. Reconciling them is a separate, later, human decision.
-6. **Anti-fabrication.** Never invent facts, figures, sources, names, dates or prior events. Never fill a gap with a plausible value. Gaps are marked **[MISSING]**, **[NOT RECOVERED]**, **[INFERENCE]**, **[UNVERIFIED SOURCE]** in red italic.
+6. **Anti-fabrication.** Never invent facts, figures, sources, names, dates or prior events. Never fill a gap with a plausible value. Gaps are marked with the tags **[MISSING]**, **[NOT RECOVERED]**, **[INFERENCE]**, **[UNVERIFIED SOURCE]**. The tag is the contract and travels in every medium — plain text, Markdown, JSON. Red italic is how the SWM Document Kit renders those tags where the medium carries styling; its absence in an unstyled return is never a reason to omit the tag.
 7. **Absence is a finding.** A domain in scope that yields nothing produces a gap-register entry, not silence. An unreachable source produces a coverage-map entry, not silence.
 8. **No improvement.** Errors, dead ends, bad naming and known-wrong statements are recovered as they stand. Correction is out of scope for a recovery run.
 9. **Naming under standing rules.** Output renders `Marco` (source `Marko` = same person, recorded in the record's source-variant note); SWM = Smart Workforce Movement; Compassionate Package attributed to Clinton Fernandez. Source wording is still quoted verbatim; the normalization applies to the extractor's own prose around it.
@@ -214,6 +216,7 @@ A failed check names what is wrong and what it affects. It does not license a fi
 
 | Version | Change |
 |---|---|
+| v2.0c | Third review pass. Section 01 clarified: the exclusion covers protected content, not the sources carrying it — such a source still appears in the manifest and coverage map, with the omission reason naming the rule and no more. Law 6 now makes the bracketed tag the contract and red italic the Document Kit rendering convention, so the marker survives plain-text, Markdown and JSON returns. |
 | v2.0b | Second review pass. Law 10 extended to credential-bearing `SOURCE` locators (redact the secret component, keep the locator retrievable). Section 01 given precedence over the carrier-context ruling, so protected content is never quoted as surround. QA gate reworded from all-must-pass to evaluated-and-reported, which no longer contradicts the rule that a failed check is disclosed. |
 | v2.0a | Review pass. Added law 10 (credentials redacted in place, the one exception to law 1) and the class 07 note. Stated precedence on the commercial-gate ruling (law 1 wins inside an admitted record; `[OUT OF MODE]` never cuts a quotation) and on Held vs. conflict counterparts (Section 03 wins; a conflict is never returned one-sided). `DOMAIN` now accepts a descriptive label for non-engine records in FULL mode. |
 | v2.0 | Added Section 03 (mode layer), Section 04 (ENGINE-ONLY admission control), Section 05 (invocation, `MODE`/`ADMISSION` parameters), Section 09. Added mode-integrity as QA check 5; added Held register as output section F. Preservation laws, record schema and sweep procedure carried forward unchanged in substance. Parent v1.x verbatim text **[NOT RECOVERED]** — Sections 01, 02, 06, 07, 08 are a reconstruction from spec. |
