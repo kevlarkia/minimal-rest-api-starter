@@ -2,7 +2,7 @@ S-WM RECOVERY SYSTEM · WORKING-MATERIAL LAYER · INTERNAL
 
 # Universal S-WM Working-Material Extractor
 
-**Version:** v2.0 · **Change:** adds the mode layer and ENGINE-ONLY admission control to the parent recovery framework. No change to the preservation laws.
+**Version:** v2.0a · **Change:** adds the mode layer and ENGINE-ONLY admission control to the parent recovery framework. One law added (law 10, credential redaction); the rest of the preservation laws unchanged.
 **Supersedes:** Universal S-WM Working-Material Extractor v1.x
 **Kit:** SWM Document Kit v2.1 · **Governed by:** SWM Standing Rules
 
@@ -55,6 +55,7 @@ These apply to every run in every mode. A mode may narrow admission. A mode may 
 7. **Absence is a finding.** A domain in scope that yields nothing produces a gap-register entry, not silence. An unreachable source produces a coverage-map entry, not silence.
 8. **No improvement.** Errors, dead ends, bad naming and known-wrong statements are recovered as they stand. Correction is out of scope for a recovery run.
 9. **Naming under standing rules.** Output renders `Marco` (source `Marko` = same person, recorded in the record's source-variant note); SWM = Smart Workforce Movement; Compassionate Package attributed to Clinton Fernandez. Source wording is still quoted verbatim; the normalization applies to the extractor's own prose around it.
+10. **Credentials are never reproduced.** Live secret material found in any source — keys, tokens, passwords, connection strings, signing material — is replaced in place with **[REDACTED: CREDENTIAL]**. The surrounding wording is preserved intact, the record's `NOTE` states that a redaction occurred, and the source locator still points at the original so the operator can retrieve it directly. This is the single, narrow exception to law 1. It covers secret material only: it never extends to content that is merely sensitive, embarrassing, commercial or inconvenient, and it is never used to keep a subject out of mode.
 
 ---
 
@@ -106,6 +107,8 @@ Fourteen classes. A record is admitted if it is evidence in any one of them.
 | 13 | **QA** | Test material, checks, QA gates, defects, known bugs, regressions, acceptance criteria |
 | 14 | **Systems health** | Reliability, failure modes, incidents, monitoring, capacity, performance, degradation behavior |
 
+**Class 07 note.** Prompt and instruction material is admitted as system evidence, and law 10 governs it: a credential embedded in a prompt is redacted in place, the rest of the prompt is returned verbatim. This framework has no authorization boundary of its own — a run reaches exactly what its operator reaches — so an ENGINE-ONLY return carrying classes 07 or 08 is an internal artifact and is handled as one. Any narrowing beyond that is set at invocation with `ADMISSION:` (Section 05), not improvised mid-run.
+
 ### Do not admit
 
 Business narrative and positioning · brand and naming rationale that carries no system behavior · pricing and commercial terms · outreach doctrine and playbooks · client career deliverables and their content · market and employer intelligence · scheduling and administrative traffic · relationship and personnel matters. And, per Section 01, medical/treatment/crisis/legal-case content — excluded absolutely, in every mode.
@@ -113,10 +116,10 @@ Business narrative and positioning · brand and naming rationale that carries no
 ### Boundary rulings
 
 - **Engine evidence inside a non-engine passage is admitted.** Return the engine content plus the minimum surrounding source wording needed to keep it intelligible, in a `CARRIER CONTEXT` field marked as such. Carrier context is quoted, not summarized, and is never treated as an admitted record itself.
-- **A named gate is engine evidence even when its subject is commercial.** Gate G4 gating pricing is a gate record; the pricing itself is not admitted. Record the gate and its criteria; mark the withheld subject `[OUT OF MODE]` rather than restating it.
+- **A named gate is engine evidence even when its subject is commercial.** Gate G4 gating pricing is a gate record; the pricing schedule it gates is a separate record and is not admitted. **Precedence: law 1 wins inside an admitted record.** If a commercial figure or term appears within the gate's own criteria, it is quoted verbatim as part of the gate — a `VERBATIM` field is never trimmed, redacted or paraphrased to keep a subject out of mode, because a criterion you cannot read is not a recovered criterion. `[OUT OF MODE]` marks the excluded neighbouring record and is written in the extractor's own fields (`FLAGS`, `NOTE`), never inside a quotation. Law 10 is the only thing that ever removes text from a `VERBATIM` field.
 - **A deliverable is not admitted; the machinery that produces it is.** A rendered client package is out. Its template, tokens, schema, render pipeline, and QA gate are in.
 - **Known-wrong and abandoned engine material is admitted**, with `STATE:` set accordingly. An abandoned architecture is engine evidence.
-- **Ambiguity does not resolve itself.** A record that is arguably engine evidence and arguably not goes to the **Held register** (output section F) with a one-line statement of why it is borderline. It is never merged into the admitted body and never silently dropped. Deciding a held record is a human call.
+- **Ambiguity does not resolve itself.** A record that is arguably engine evidence and arguably not goes to the **Held register** (output section F) with a one-line statement of why it is borderline, and is never merged into the admitted body. **One exception, and Section 03 takes precedence over this ruling:** a borderline record that is the other side of an admitted **[CONFLICT]** is admitted, marked `ADMITTED: as conflict counterpart`, and cross-linked in the conflict register — a conflict is never returned with one side sitting in Held. Nothing is silently dropped either way. Deciding a held record is a human call.
 
 ---
 
@@ -152,14 +155,16 @@ Refuse and state why if a run asks for `SOURCE PRESERVATION: OFF`, `CANONIZATION
 
 ```
 RECORD ID:        ENG-<domain>-<nnn>          (FULL mode: WM-<nnn>)
-DOMAIN:           <admission class, Section 04>
+DOMAIN:           <admission class, Section 04 — or, in FULL mode, a descriptive
+                   domain label for non-engine material>
 SOURCE:           <artifact name / type / locator>
 DATE:             <date, or [UNDATED] + relative position>
 STATE:            STATED | PROPOSED | SEALED | SUPERSEDED | ABANDONED | UNCLEAR
 VERBATIM:         "<exact source wording, uncorrected, […] for cuts>"
 CARRIER CONTEXT:  "<minimum quoted surround, where needed>"
 VERIFICATION:     VERIFIED | CONFIRM | RECLASSIFIED | RECON FIRST
-FLAGS:            [CONFLICT] [MISSING] [INFERENCE] [UNVERIFIED SOURCE] [UNDATED] [OUT OF MODE]
+FLAGS:            [CONFLICT] [MISSING] [INFERENCE] [UNVERIFIED SOURCE] [UNDATED]
+                   [OUT OF MODE] [REDACTED: CREDENTIAL]
 LINKS:            <related RECORD IDs — conflicts, supersessions, dependencies>
 NOTE:             <extractor's own words — locator detail only, never interpretation>
 ```
@@ -197,7 +202,7 @@ Return in this order:
 
 Five checks, all must pass before return:
 
-1. **Preservation check** — every `VERBATIM` is source wording; no paraphrase has entered the field
+1. **Preservation check** — every `VERBATIM` is source wording; no paraphrase has entered the field, and the only text removed from one is a law-10 credential redaction, noted in the record
 2. **Provenance check** — every record carries source and date, or carries the tag explaining why it cannot
 3. **Anti-fabrication sweep** — no invented value anywhere; every gap explicitly marked
 4. **Non-resolution check** — no conflict silently reconciled, no version silently elected
@@ -209,6 +214,7 @@ A failed check is reported in the attestation. It does not license a fix that wo
 
 | Version | Change |
 |---|---|
+| v2.0a | Review pass. Added law 10 (credentials redacted in place, the one exception to law 1) and the class 07 note. Stated precedence on the commercial-gate ruling (law 1 wins inside an admitted record; `[OUT OF MODE]` never cuts a quotation) and on Held vs. conflict counterparts (Section 03 wins; a conflict is never returned one-sided). `DOMAIN` now accepts a descriptive label for non-engine records in FULL mode. |
 | v2.0 | Added Section 03 (mode layer), Section 04 (ENGINE-ONLY admission control), Section 05 (invocation, `MODE`/`ADMISSION` parameters), Section 09. Added mode-integrity as QA check 5; added Held register as output section F. Preservation laws, record schema and sweep procedure carried forward unchanged in substance. Parent v1.x verbatim text **[NOT RECOVERED]** — Sections 01, 02, 06, 07, 08 are a reconstruction from spec. |
 
 ---
